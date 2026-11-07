@@ -1,10 +1,10 @@
 # 守界 · FounderGuard
 
-融资可以让渡股权，个人责任不能稀里糊涂。面向创始人及融资公司的投资协议审查 Agent Skill：输入协议与关联文件，输出风险定位、责任边界、情景测算、修改草案和谈判顺序。
+融资可以让渡股权，个人责任不能稀里糊涂。面向创始人及融资公司的投资协议审查 Agent Skill：输入协议与关联文件后，先定位风险并核对责任边界，再测算不同情景，准备修改草案并排定谈判顺序。
 
 Founder-side financing agreement review: trace liability, test downside scenarios, and prepare actionable negotiation drafts.
 
-按 [Agent Skills 开放标准](https://agentskills.io) 组织，可供支持该标准的 Agent 加载；各宿主的文件读取、联网和脚本能力不同，本项目未逐一完成跨平台实测。
+按 [Agent Skills 开放标准](https://agentskills.io) 组织，可供支持该标准的 Agent 加载。各宿主的文件读取、联网和脚本能力不同，本项目未逐一完成跨平台实测。
 
 ## 安装 / Install
 
@@ -12,7 +12,7 @@ Founder-side financing agreement review: trace liability, test downside scenario
 npx skills add Ficere/shou-jie
 ```
 
-安装器需要 Node.js。核心审查无需 Python；实时法律核验需要联网，可选经济测算脚本需要 Python 3.10+。
+安装器需要 Node.js。核心审查无需 Python。实时法律核验需要联网，可选经济测算脚本需要 Python 3.10+。
 
 <details>
 <summary>手动安装与 Perplexity Computer / Alternative methods</summary>
@@ -81,7 +81,7 @@ Perplexity Computer 可将完整技能目录打成 ZIP，在 [Skills 管理页�
 - **P2：** 清晰度、通知、协作等优化项。
 - **待核验：** 证据状态，可与 P0 并列，不等于低风险。
 
-不默认给总分，也不让其他低风险项抵消 P0。输出包含结论摘要、文件清单、责任图、逐条审查表、情景、修改草案、谈判顺序和律师复核事项；没有全文时，只做局部审查。
+不默认给总分，也不让其他低风险项抵消 P0。输出先给结论摘要和文件清单，再用责任图与逐条审查表展开。情景分析之后附修改草案，列出谈判顺序和律师复核事项。没有全文时，只做局部审查。
 
 本项目没有把固定年利率、清算倍数、行权窗口或“以股权为限”等措辞视为普遍有效的安全港。参考入口见 [法律证据基线](references/legal-baseline.md)，每次实际审查仍须重新核验现行规则。
 
@@ -89,7 +89,7 @@ Perplexity Computer 可将完整技能目录打成 ZIP，在 [Skills 管理页�
 
 ## 独立脚本 / Standalone script
 
-Python 标准库即可运行；利率和持股比例用小数，金额使用同一币种。输出是合同假设下的算术，不是法律意见。
+Python 标准库即可运行。利率和持股比例用小数，金额使用同一币种。输出是合同假设下的算术，不是法律意见。
 
 ```bash
 python scripts/economics.py --help
@@ -99,7 +99,7 @@ python scripts/economics.py liquidation --investment 10000000 --share 0.2 --proc
 python scripts/economics.py antidilution --old-price 10 --existing-diluted-shares 1000000 --new-money 1000000 --new-price 5
 ```
 
-上述回购结果为 1110 万；同一退出额下非参与型投资人分配为 1000 万，参与型为 1100 万。清算输入必须是已扣债务、税费与交易费用后可分配给股东的金额；其他股东合计不等于创始人个人所得。
+上述回购结果为 1110 万。同一退出额下非参与型投资人分配为 1000 万，参与型为 1100 万。清算输入必须是已扣债务、税费与交易费用后可分配给股东的金额。其他股东合计不等于创始人个人所得。
 
 脚本不支持多轮优先级、参与封顶、分批本金、复利、分红时点调整或法律约束。复杂情况应另建可复核模型，不能强套单轮结果。
 
@@ -110,7 +110,7 @@ python -m unittest discover -s tests -v
 agentskills validate "$PWD"
 ```
 
-第一项验证经济算术，第二项需另行安装 `agentskills` 验证器。`tests/behavior-cases.md` 是独立的 Agent 行为回归规范，不会被单元测试自动执行；不能把算术通过等同法律推理正确。
+第一项验证经济算术，第二项需另行安装 `agentskills` 验证器。`tests/behavior-cases.md` 是独立的 Agent 行为回归规范，不会被单元测试自动执行。不能把算术通过等同法律推理正确。
 
 ## 目录结构 / Structure
 
@@ -134,7 +134,7 @@ shou-jie/
 
 ## 免责声明 / Disclaimer
 
-本项目用于融资协议风险识别和谈判准备，不构成律师意见、投资建议或效力保证。默认关注中国内地非上市公司股权融资；跨境、国资审批、已发生争议、重大个人责任等应由独立律师结合完整文件处理，法律和政策必须按使用当日重新核验。
+本项目用于融资协议风险识别和谈判准备，不构成律师意见、投资建议或效力保证。默认关注中国内地非上市公司股权融资。跨境、国资审批、已发生争议、重大个人责任等应由独立律师结合完整文件处理，法律和政策必须按使用当日重新核验。
 
 This project supports issue spotting and negotiation preparation. It is not legal advice, an investment recommendation, or a guarantee of enforceability; obtain independent jurisdiction-specific counsel before signing or responding to a dispute.
 
